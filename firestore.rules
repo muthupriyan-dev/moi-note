@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Public code -> familyId lookup, used only to resolve a join code.
+    // Readable by any signed-in user (the code itself is meant to be shared).
+    // Anyone signed-in may create one (paired with creating a family doc);
+    // it is never updated or deleted by the client.
+    match /joinCodes/{code} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update, delete: if false;
+    }
+
+    // Each user can only read/write their own profile doc
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // A family is visible/editable only to its members.
+    // Joining: any signed-in user may add ONLY themself to the members array
+    // (they need to know the joinCode shared by an existing member to find
+    // the familyId in the first place — see auth.js).
+    match /families/{familyId} {
+      allow create: if request.auth != null
+        && request.resource.data.members.size() == 1
+        && request.resource.data.members[0] == request.auth.uid;
+
+      allow read: if request.auth != null
+        && request.auth.uid in resource.data.members;
+
+      allow update: if request.auth != null
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['members'])
+        && request.resource.data.members == resource.data.members.concat([request.auth.uid]);
+    }
+
+    // people / events / entries — only members of the parent family
+    match /families/{familyId}/{collection}/{docId} {
+      allow read, write: if request.auth != null
+        && request.auth.uid in get(/databases/$(database)/documents/families/$(familyId)).data.members;
+    }
+  }
+}
