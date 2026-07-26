@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#800000">
+<title>மொய் நோட் | மொய் பதிவேடு</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="மொய் நோட்">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== LOADING ===================== -->
+<div id="loadingScreen" class="lock-screen">
+  <div class="lock-card" style="text-align:center;">
+    <h2>மொய் நோட்</h2>
+    <p class="lock-sub">ஏற்றுகிறது...</p>
+  </div>
+</div>
+
+<!-- ===================== AUTH CHOICE ===================== -->
+<div id="authChoiceScreen" class="lock-screen hidden">
+  <div class="lock-card">
+    <div class="lock-emblem">
+      <svg viewBox="0 0 100 100" width="64" height="64">
+        <circle cx="50" cy="50" r="46" fill="#FFF8E7" stroke="#D4AF37" stroke-width="4"/>
+        <circle cx="50" cy="50" r="30" fill="#800000" stroke="#D4AF37" stroke-width="3"/>
+        <text x="50" y="61" font-family="Baloo Thambi 2, sans-serif" font-size="30" font-weight="800" fill="#D4AF37" text-anchor="middle">₹</text>
+        <circle cx="50" cy="11" r="3" fill="#D4AF37"/><line x1="50" y1="14" x2="50" y2="21" stroke="#D4AF37" stroke-width="2"/>
+        <circle cx="89" cy="50" r="3" fill="#D4AF37"/><line x1="86" y1="50" x2="79" y2="50" stroke="#D4AF37" stroke-width="2"/>
+        <circle cx="50" cy="89" r="3" fill="#D4AF37"/><line x1="50" y1="86" x2="50" y2="79" stroke="#D4AF37" stroke-width="2"/>
+        <circle cx="11" cy="50" r="3" fill="#D4AF37"/><line x1="14" y1="50" x2="21" y2="50" stroke="#D4AF37" stroke-width="2"/>
+      </svg>
+    </div>
+    <h2>மொய் நோட்</h2>
+    <p class="lock-sub">குடும்ப மொய் பதிவேடு — எங்கிருந்தும் பயன்படுத்துங்கள்</p>
+    <button type="button" class="btn-primary" id="goLoginBtn" style="width:100%;margin-bottom:10px;">உள்நுழைய (Login)</button>
+    <button type="button" class="btn-secondary" id="goSignupBtn" style="width:100%;">புதிய கணக்கு (Sign Up)</button>
+  </div>
+</div>
+
+<!-- ===================== SIGN UP ===================== -->
+<div id="signupScreen" class="lock-screen hidden">
+  <div class="lock-card">
+    <h2>புதிய கணக்கு உருவாக்க</h2>
+    <p class="lock-sub">இது உங்க தனிப்பட்ட கணக்கு — எந்த device-லயும் இதே மின்னஞ்சல்/கடவுச்சொல்லுடன் login செய்யலாம்</p>
+    <form id="signupForm" autocomplete="on">
+      <div class="form-group">
+        <label for="signupName">உங்கள் பெயர்</label>
+        <input type="text" id="signupName" autocomplete="name" required placeholder="எ.கா. முத்து">
+      </div>
+      <div class="form-group">
+        <label for="signupEmail">மின்னஞ்சல்</label>
+        <input type="email" id="signupEmail" autocomplete="username" required placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label for="signupPassword">கடவுச்சொல் (6+ எழுத்துகள்)</label>
+        <input type="password" id="signupPassword" autocomplete="new-password" required minlength="6">
+      </div>
+      <div class="field-error" id="signupError"></div>
+      <button type="submit" class="btn-primary" style="width:100%;margin-top:6px;">கணக்கு உருவாக்கு</button>
+    </form>
+    <button type="button" class="text-btn" id="backToChoiceFromSignup" style="margin-top:10px;">← பின் செல்</button>
+  </div>
+</div>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="loginScreen" class="lock-screen hidden">
+  <div class="lock-card">
+    <h2>உள்நுழைய</h2>
+    <p class="lock-sub">உங்க மின்னஞ்சல் & கடவுச்சொல்லை கொடுங்கள்</p>
+    <form id="loginForm" autocomplete="on">
+      <div class="form-group">
+        <label for="loginEmail">மின்னஞ்சல்</label>
+        <input type="email" id="loginEmail" autocomplete="username" required placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">கடவுச்சொல்</label>
+        <input type="password" id="loginPassword" autocomplete="current-password" required>
+      </div>
+      <div class="field-error" id="loginError"></div>
+      <button type="submit" class="btn-primary" style="width:100%;margin-top:6px;">உள்நுழை</button>
+    </form>
+    <button type="button" class="text-btn" id="forgotPasswordBtn" style="margin-top:8px;">கடவுச்சொல் மறந்துவிட்டதா?</button>
+    <br>
+    <button type="button" class="text-btn" id="backToChoiceFromLogin" style="margin-top:6px;">← பின் செல்</button>
+  </div>
+</div>
+
+<!-- ===================== FAMILY CHOICE (after first login/signup) ===================== -->
+<div id="familyChoiceScreen" class="lock-screen hidden">
+  <div class="lock-card">
+    <h2>உங்க Family Ledger</h2>
+    <p class="lock-sub">ஒரு குடும்பத்தின் மொய் பதிவுகள் அந்த குடும்ப உறுப்பினர்கள் மட்டும் பார்க்க முடியும்.</p>
+    <button type="button" class="btn-primary" id="goCreateFamilyBtn" style="width:100%;margin-bottom:10px;">புதிய Family உருவாக்கு</button>
+    <button type="button" class="btn-secondary" id="goJoinFamilyBtn" style="width:100%;">Family Code-உடன் இணைய</button>
+  </div>
+</div>
+
+<!-- ===================== CREATE FAMILY ===================== -->
+<div id="createFamilyScreen" class="lock-screen hidden">
+  <div class="lock-card">
+    <div id="createFamilyFormWrap">
+      <h2>புதிய Family உருவாக்க</h2>
+      <p class="lock-sub">இதன் பிறகு கிடைக்கும் Code-ஐ உங்க குடும்ப உறுப்பினர்களுக்கு கொடுங்க — அவங்க அதை பயன்படுத்தி இணையலாம்.</p>
+      <form id="createFamilyForm">
+        <div class="form-group">
+          <label for="newFamilyName">குடும்பத்தின் பெயர்</label>
+          <input type="text" id="newFamilyName" required placeholder="எ.கா. முத்து குடும்பம்">
+        </div>
+        <div class="field-error" id="createFamilyError"></div>
+        <button type="submit" class="btn-primary" style="width:100%;margin-top:6px;">உருவாக்கு</button>
+      </form>
+      <button type="button" class="text-btn" id="backToFamilyChoiceFromCreate" style="margin-top:10px;">← பின் செல்</button>
+    </div>
+    <div id="familyCreatedSuccess" class="hidden" style="text-align:center;">
+      <h2>🎉 Family உருவாக்கப்பட்டது!</h2>
+      <p class="lock-sub">இந்த Code-ஐ உங்க குடும்ப உறுப்பினர்களுக்கு share பண்ணுங்க:</p>
+      <div class="amount-old-display" style="justify-content:center;font-size:1.4rem;letter-spacing:3px;margin:14px 0;" id="createdJoinCode">------</div>
+      <button type="button" class="btn-primary" id="goToAppAfterCreateBtn" style="width:100%;">App-க்கு செல்</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== JOIN FAMILY ===================== -->
+<div id="joinFamilyScreen" class="lock-screen hidden">
+  <div class="lock-card">
+    <h2>Family-ல் இணைய</h2>
+    <p class="lock-sub">உங்க குடும்ப உறுப்பினரிடம் இருந்து கிடைத்த Code-ஐ உள்ளிடுங்க</p>
+    <form id="joinFamilyForm">
+      <div class="form-group">
+        <label for="joinFamilyCode">Family Code</label>
+        <input type="text" id="joinFamilyCode" required placeholder="எ.கா. AB12CD" style="text-transform:uppercase;letter-spacing:2px;">
+      </div>
+      <div class="field-error" id="joinFamilyError"></div>
+      <button type="submit" class="btn-primary" style="width:100%;margin-top:6px;">இணைய</button>
+    </form>
+    <button type="button" class="text-btn" id="backToFamilyChoiceFromJoin" style="margin-top:10px;">← பின் செல்</button>
+  </div>
+</div>
+
+<!-- ===================== APP SHELL ===================== -->
+<div id="app" class="app hidden">
+
+  <header class="app-header">
+    <div class="header-pattern" aria-hidden="true"></div>
+    <div class="header-row">
+      <div class="brand">
+        <span class="brand-mark">₹</span>
+        <div class="brand-text">
+          <h1>மொய் நோட்</h1>
+          <p id="familyNameLabel">குடும்ப மொய் பதிவேடு</p>
+        </div>
+      </div>
+      <button class="icon-btn" id="globalSearchBtn" aria-label="தேடல்">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div id="searchOverlay" class="search-overlay hidden">
+    <div class="search-bar-row">
+      <input type="text" id="globalSearchInput" placeholder="பெயர், நிகழ்வு, தொகை தேடுங்கள்..." autocomplete="off">
+      <button class="text-btn" id="closeSearchBtn">மூடு</button>
+    </div>
+    <div id="globalSearchResults" class="search-results"></div>
+  </div>
+
+  <main class="app-main" id="appMain">
+
+    <!-- HOME -->
+    <section class="screen" id="screen-home">
+      <div class="cards-grid">
+        <div class="stat-card stat-received"><p class="stat-label">மொத்தம் மொய் வாங்கியது</p><p class="stat-value" id="statReceived">₹0</p></div>
+        <div class="stat-card stat-given"><p class="stat-label">மொத்தம் மொய் போட்டது</p><p class="stat-value" id="statGiven">₹0</p></div>
+        <div class="stat-card stat-balance"><p class="stat-label">நிகர இருப்பு</p><p class="stat-value" id="statBalance">₹0</p></div>
+        <div class="stat-card stat-people"><p class="stat-label">நபர்கள்</p><p class="stat-value" id="statPeople">0</p></div>
+        <div class="stat-card stat-recent"><p class="stat-label">பதிவுகள்</p><p class="stat-value" id="statRecords">0</p></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>சமீபத்திய பதிவுகள்</h3><button class="link-btn" data-go="screen-records">அனைத்தும் →</button></div>
+        <div id="recentEntries" class="entry-list"></div>
+      </div>
+    </section>
+
+    <!-- PEOPLE -->
+    <section class="screen hidden" id="screen-people">
+      <div class="screen-head">
+        <input type="text" id="peopleSearch" class="search-input" placeholder="நபரைத் தேடுங்கள்...">
+      </div>
+      <div id="peopleList" class="people-list"></div>
+      <button class="fab" id="addPersonFab" aria-label="நபரைச் சேர்">+</button>
+    </section>
+
+    <!-- RECORDS -->
+    <section class="screen hidden" id="screen-records">
+      <div class="screen-head screen-head-col">
+        <input type="text" id="recordsSearch" class="search-input" placeholder="பதிவுகளைத் தேடுங்கள்...">
+        <select id="recordsTownFilter" class="select-input" style="flex:1;">
+          <option value="">அனைத்து ஊர்களும்</option>
+        </select>
+      </div>
+      <div class="tab-row">
+        <button class="tab-btn active" data-rtype="all">அனைத்தும்</button>
+        <button class="tab-btn" data-rtype="received">மொய் வாங்கியது</button>
+        <button class="tab-btn" data-rtype="given">மொய் போட்டது</button>
+      </div>
+      <div id="recordsListEl" class="entry-list big"></div>
+      <button class="fab" id="addRecordFab" aria-label="பதிவு சேர்">+</button>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="screen hidden" id="screen-settings">
+      <div class="panel">
+        <div class="panel-head"><h3>உங்கள் கணக்கு</h3></div>
+        <div class="settings-row"><span>பெயர்</span><span class="muted" id="settingsUserName">—</span></div>
+        <div class="settings-row"><span>மின்னஞ்சல்</span><span class="muted" id="settingsUserEmail">—</span></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>குடும்பம்</h3></div>
+        <div class="settings-row"><span>பெயர்</span><span class="muted" id="settingsFamilyName">—</span></div>
+        <div class="settings-row"><span>Join Code</span><span class="muted" id="settingsJoinCode">—</span></div>
+        <button class="settings-action-btn" id="copyJoinCodeBtn">📋 Code-ஐ Copy பண்ணு (Share பண்ண)</button>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>தரவு (Data)</h3></div>
+        <button class="settings-action-btn" id="exportPdfBtn">📄 PDF ஆக Export செய்</button>
+        <button class="settings-action-btn" id="exportExcelBtn">📊 Excel ஆக Export செய்</button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h3>ஆபத்தான பகுதி (Danger Zone)</h3></div>
+        <button class="settings-action-btn danger" id="deleteAllDataBtn">🗑️ அனைத்து தரவுகளையும் அழி</button>
+        <p class="hint-text">இது இந்த குடும்பத்தின் People, Records — அனைத்தையும் நிரந்தரமாக நீக்கும். Password உறுதிப்படுத்தல் தேவை.</p>
+      </div>
+
+      <div class="panel">
+        <button class="settings-action-btn danger" id="logoutBtn">🚪 Logout</button>
+      </div>
+
+      <div class="panel social-panel">
+        <div class="panel-head"><h3>Developer-ஐ Connect பண்ணுங்க</h3></div>
+        <div class="social-links-row">
+          <a class="social-link-btn" href="https://www.instagram.com/itz.muthuu?igsh=MXZiNGhqNmpoNGU1bw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="color:#c32aa3">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a class="social-link-btn" href="https://www.linkedin.com/in/muthupriyan-s-b76698377?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="color:#0a66c2">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3V9zm6.5 0h3.83v1.64h.05c.53-1 1.84-2.06 3.78-2.06 4.04 0 4.79 2.66 4.79 6.12V21h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96V21h-4V9z"/></svg>
+          </a>
+          <a class="social-link-btn" href="https://github.com/muthupriyan-dev" target="_blank" rel="noopener noreferrer" aria-label="GitHub" style="color:#1b1e21">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.52 2.87 8.35 6.84 9.71.5.1.68-.22.68-.49 0-.24-.01-1.05-.01-1.9-2.78.61-3.37-1.21-3.37-1.21-.46-1.18-1.11-1.49-1.11-1.49-.91-.63.07-.62.07-.62 1 .07 1.53 1.04 1.53 1.04.89 1.55 2.34 1.1 2.91.84.09-.66.35-1.1.63-1.36-2.22-.26-4.56-1.13-4.56-5.03 0-1.11.39-2.02 1.03-2.73-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.04a9.4 9.4 0 0 1 5 0c1.9-1.31 2.75-1.04 2.75-1.04.55 1.42.2 2.47.1 2.73.64.71 1.03 1.62 1.03 2.73 0 3.91-2.35 4.77-4.58 5.02.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+          </a>
+          <a class="social-link-btn" href="mailto:smuthupriyan020108@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Mail" style="color:#800000">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          </a>
+          <button class="social-link-btn share-trigger-btn" id="siteShareBtn" type="button" aria-label="Share" style="color:var(--gold-soft); background:var(--maroon);">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="12" r="2.3"/><circle cx="18" cy="6" r="2.3"/><circle cx="18" cy="18" r="2.3"/><path d="M8 10.8l8-4.6M8 13.2l8 4.6"/></svg>
+          </button>
+        </div>
+        <p class="hint-text social-credit">மொய் நோட் — Made by Muthupriyan ❤️</p>
+      </div>
+    </section>
+
+
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-go="screen-home">🏠<span>முகப்பு</span></button>
+    <button class="nav-btn" data-go="screen-people">👥<span>நபர்கள்</span></button>
+    <button class="nav-btn" data-go="screen-records">📋<span>பதிவுகள்</span></button>
+    <button class="nav-btn" data-go="screen-settings">⚙️<span>அமைப்பு</span></button>
+  </nav>
+</div>
+
+<!-- ===================== MODAL: ADD/EDIT PERSON ===================== -->
+<div id="personModal" class="modal-backdrop hidden">
+  <div class="modal-sheet">
+    <div class="modal-head"><h2 id="personModalTitle">நபரைச் சேர்</h2><button class="modal-close" data-close="personModal">✕</button></div>
+    <form id="personForm">
+      <input type="hidden" id="personId">
+      <div class="form-group"><label>பெயர்</label><input type="text" id="personName" required></div>
+      <div class="form-group"><label>உறவு / குறிப்பு (optional)</label><input type="text" id="personRelation" placeholder="எ.கா. மாமா, நண்பர்"></div>
+      <div class="form-group"><label>தொலைபேசி (optional)</label><input type="tel" id="personPhone"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" data-close="personModal">ரத்து</button>
+        <button type="submit" class="btn-primary">சேமி</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL: ADD/EDIT RECORD (ENTRY) ===================== -->
+<div id="entryModal" class="modal-backdrop hidden">
+  <div class="modal-sheet">
+    <div class="modal-head"><h2 id="entryModalTitle">பதிவு சேர்</h2><button class="modal-close" data-close="entryModal">✕</button></div>
+    <form id="entryForm">
+      <input type="hidden" id="entryId">
+
+      <!-- Priority: RECEIVED first, GIVEN second -->
+      <div class="form-group">
+        <label>வகை</label>
+        <div class="radio-pills">
+          <button type="button" class="radio-pill selected" data-entrytype="received">மொய் வாங்கியது</button>
+          <button type="button" class="radio-pill" data-entrytype="given">மொய் போட்டது</button>
+        </div>
+        <input type="hidden" id="entryType" value="received">
+      </div>
+
+      <div class="form-group autocomplete-wrap">
+        <label>ஊர்</label>
+        <input type="text" id="entryTownInput" autocomplete="off" placeholder="ஊரின் பெயரை type பண்ணுங்க...">
+        <div id="townAutocompleteList" class="autocomplete-list hidden"></div>
+      </div>
+
+      <div class="form-group autocomplete-wrap">
+        <label>பெயர்</label>
+        <input type="text" id="entryPersonInput" autocomplete="off" placeholder="பெயரை type பண்ணுங்க..." required>
+        <input type="hidden" id="entryPersonId">
+        <div id="personAutocompleteList" class="autocomplete-list hidden"></div>
+      </div>
+
+      <div class="form-group">
+        <label>நம்பர் (optional)</label>
+        <input type="tel" id="entryPhone" placeholder="தொலைபேசி எண்">
+      </div>
+
+      <div class="form-group" id="entryEventGroup">
+        <label>நிகழ்வு</label>
+        <select id="entryEventType">
+          <option value="marriage">திருமணம்</option>
+          <option value="earring">காதணி விழா</option>
+          <option value="housewarming">வீடு புகு விழா</option>
+          <option value="birthday">பிறந்தநாள்</option>
+          <option value="moivirundhu">மொய் விருந்து</option>
+          <option value="other">மாற்றவை</option>
+        </select>
+      </div>
+
+      <div class="amount-split-row">
+        <div class="form-group">
+          <label id="amountOldLabel">அவர்கள் செய்தது *</label>
+          <input type="number" id="entryAmountOld" min="0" required placeholder="0">
+        </div>
+        <div class="form-group">
+          <label id="amountNewLabel">நாம் செய்தது</label>
+          <input type="number" id="entryAmountNew" min="0" placeholder="0">
+        </div>
+      </div>
+
+      <div class="form-group"><label>தேதி</label><input type="date" id="entryDate" required></div>
+      <div class="form-group"><label>இடம் (optional)</label><input type="text" id="entryPlace" placeholder="எ.கா. URBAN Mahal"></div>
+
+      <div class="form-group">
+        <label>அழைப்பிதழ் Photo (optional)</label>
+        <input type="hidden" id="entryPhotoData">
+        <div id="entryPhotoPreviewWrap" class="photo-preview-wrap hidden">
+          <img id="entryPhotoPreview" class="photo-preview-thumb" alt="அழைப்பிதழ்">
+          <button type="button" id="entryPhotoRemoveBtn" class="photo-remove-btn">✕ நீக்கு</button>
+        </div>
+        <label for="entryPhotoInput" class="photo-upload-btn" id="entryPhotoUploadLabel">📷 Photo சேர்க்க</label>
+        <input type="file" id="entryPhotoInput" accept="image/*" class="hidden">
+      </div>
+
+      <div class="form-group"><label>குறிப்பு (optional)</label><textarea id="entryNotes"></textarea></div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-danger hidden" id="deleteEntryBtn">நீக்கு</button>
+        <button type="button" class="btn-secondary" data-close="entryModal">ரத்து</button>
+        <button type="submit" class="btn-primary">சேமி</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== GENERIC CONFIRM DIALOG ===================== -->
+<div id="confirmModal" class="modal-backdrop hidden">
+  <div class="modal-sheet" style="max-width:380px;">
+    <div class="modal-head"><h2 id="confirmModalTitle">உறுதிப்படுத்தவும்</h2></div>
+    <p id="confirmModalMessage" style="margin-bottom:16px;color:var(--brown);"></p>
+    <div class="modal-actions">
+      <button type="button" class="btn-secondary" id="confirmModalCancel">Cancel</button>
+      <button type="button" class="btn-danger" id="confirmModalOk">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: DELETE ALL DATA (password confirm) ===================== -->
+<div id="deleteAllModal" class="modal-backdrop hidden">
+  <div class="modal-sheet">
+    <div class="modal-head"><h2>⚠️ அனைத்து தரவையும் அழிக்க</h2><button class="modal-close" data-close="deleteAllModal">✕</button></div>
+    <p style="margin-bottom:14px;color:#b00020;font-weight:600;">இது People, Records — மொத்த குடும்ப தரவையும் நிரந்தரமாக நீக்கிவிடும். இதை மீட்க முடியாது!</p>
+    <form id="deleteAllForm">
+      <div class="form-group">
+        <label>உறுதிப்படுத்த உங்கள் கடவுச்சொல்லை கொடுங்கள்</label>
+        <input type="password" id="deleteAllPassword" autocomplete="current-password" required>
+      </div>
+      <div class="field-error" id="deleteAllError"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" data-close="deleteAllModal">ரத்து</button>
+        <button type="submit" class="btn-danger">ஆம், அனைத்தையும் அழி</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL: PHOTO LIGHTBOX (full view) ===================== -->
+<div id="photoLightbox" class="photo-lightbox hidden">
+  <button type="button" class="photo-lightbox-close" id="photoLightboxClose">✕</button>
+  <img id="photoLightboxImg" src="" alt="அழைப்பிதழ் full view">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script type="module" src="firebase-config.js"></script>
+<script type="module" src="auth.js"></script>
+<script type="module" src="app.js"></script>
+<script>
+  (function(){
+    var shareBtn = document.getElementById('siteShareBtn');
+    if(!shareBtn) return;
+    shareBtn.addEventListener('click', function(){
+      var shareData = {
+        title: 'மொய் நோட்',
+        text: 'மொய் நோட் — உங்க குடும்ப மொய் பதிவுகளை எளிதா track பண்ண. நீங்களும் இணையுங்க!',
+        url: window.location.origin + window.location.pathname
+      };
+      if(navigator.share){
+        navigator.share(shareData).catch(function(){ /* user cancelled, ignore */ });
+      } else if(navigator.clipboard){
+        navigator.clipboard.writeText(shareData.url).then(function(){
+          if(window.showToast) showToast('Link copy ஆச்சு — யாருக்கும் paste பண்ணி அனுப்பலாம் 📋');
+          else alert('Link copy ஆச்சு: ' + shareData.url);
+        });
+      } else {
+        alert(shareData.url);
+      }
+    });
+  })();
+</script>
+<script>
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(err){
+        console.log('SW register failed:', err);
+      });
+    });
+  }
+</script>
+</body>
+</html>
