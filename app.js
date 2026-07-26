@@ -398,7 +398,9 @@ $("entryPhotoInput").addEventListener("change", async (e) => {
   }
 });
 
-$("entryPhotoRemoveBtn").addEventListener("click", () => {
+$("entryPhotoRemoveBtn").addEventListener("click", async () => {
+  const ok = await customConfirm("இந்த Photo-வை நீக்கவா?", "Photo நீக்க");
+  if (!ok) return;
   $("entryPhotoData").value = "";
   $("entryPhotoInput").value = "";
   $("entryPhotoPreviewWrap").classList.add("hidden");
